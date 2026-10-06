@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<title>Better Fluid | Fashion Collection</title>
+<style>
+:root{--black:#080808;--gold:#d4af37;--cream:#f7f2e8;--muted:#aaa;--card:#111;--line:#282828}
+*{box-sizing:border-box}body{margin:0;background:var(--black);color:#fff;font-family:Arial,sans-serif}
+button,input,textarea,select{font:inherit}.top{background:var(--gold);color:#080808;text-align:center;padding:8px;font-size:12px;font-weight:bold}
+header{position:sticky;top:0;z-index:20;background:rgba(8,8,8,.96);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:16px 5%}
+.logo{font-size:23px;letter-spacing:3px;font-weight:800;color:var(--gold)}nav a{color:#fff;text-decoration:none;margin:0 12px;font-size:14px}
+.cart-btn{background:var(--gold);color:#080808;border:0;padding:10px 14px;border-radius:6px;font-weight:bold;cursor:pointer}
+.hero{padding:75px 6%;text-align:center;background:radial-gradient(circle at center,#2a210d 0,#080808 55%);border-bottom:1px solid var(--line)}
+.hero small{color:var(--gold);letter-spacing:4px}.hero h1{font-family:Georgia,serif;font-size:clamp(42px,10vw,78px);margin:15px 0}.hero p{color:#ccc;max-width:580px;margin:0 auto 28px;line-height:1.7}
+.btn{display:inline-block;background:var(--gold);color:#080808;border:0;border-radius:5px;padding:13px 20px;font-weight:bold;cursor:pointer;text-decoration:none}
+section{padding:55px 6%}.section-title{text-align:center;margin-bottom:30px}.section-title h2{font-family:Georgia,serif;font-size:34px;margin:5px}.section-title p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:18px;max-width:1100px;margin:auto}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}.pic{height:210px;background:linear-gradient(145deg,#282828,#0d0d0d);display:flex;align-items:center;justify-content:center;color:#777;font-size:48px}.card-body{padding:15px}.tag{font-size:11px;color:var(--gold);letter-spacing:1px}.card h3{margin:7px 0}.price{font-weight:bold;color:var(--gold);margin-bottom:12px}.card button{width:100%;background:transparent;border:1px solid var(--gold);color:var(--gold);padding:10px;border-radius:5px;cursor:pointer}.card button:hover{background:var(--gold);color:#000}
+.about{background:#0d0d0d;text-align:center}.about p{max-width:700px;margin:auto;color:#ccc;line-height:1.8}
+footer{padding:30px 6%;border-top:1px solid var(--line);text-align:center;color:#888;font-size:13px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:40}.overlay.show{display:block}.drawer{position:absolute;right:0;top:0;height:100%;width:min(430px,100%);background:#111;padding:22px;overflow:auto;border-left:1px solid var(--gold)}
+.close{float:right;background:none;border:0;color:#fff;font-size:26px;cursor:pointer}.drawer h2{color:var(--gold);margin-top:5px}.cart-item{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line);padding:14px 0}.qty button{padding:3px 8px;background:#222;color:#fff;border:1px solid #555}.total{font-size:20px;font-weight:bold;display:flex;justify-content:space-between;margin:20px 0}.form input,.form textarea{width:100%;background:#181818;border:1px solid #444;color:#fff;padding:12px;margin:7px 0;border-radius:5px}.form textarea{min-height:80px}.notice{background:#19150a;border:1px solid #5d4a18;padding:12px;border-radius:6px;color:#ddd;font-size:13px;line-height:1.6}.order{width:100%;margin-top:10px}.empty{text-align:center;color:#888;padding:30px}
+@media(max-width:650px){nav{display:none}.hero{padding:55px 6%}section{padding:42px 5%}.pic{height:180px}}
+</style>
+</head>
+<body>
+<div class="top">BETTER FLUID — FASHION THAT FITS YOUR STYLE</div>
+<header>
+  <div class="logo">BETTER FLUID</div>
+  <nav><a href="#home">Home</a><a href="#bags">Bags</a><a href="#shoes">Shoes</a></nav>
+  <button class="cart-btn" onclick="openCart()">Cart (<span id="count">0</span>)</button>
+</header>
+
+<main id="home">
+<section class="hero">
+  <small>BETTER FLUID COLLECTION</small>
+  <h1>Own Your Style.</h1>
+  <p>Discover our handpicked collection of stylish bags and shoes, made for everyday confidence and special moments.</p>
+  <a class="btn" href="#collections">Shop Collection</a>
+</section>
+
+<section id="collections">
+  <div class="section-title"><h2>Our Collections</h2><p>Choose your favourite pieces.</p></div>
+  <div id="bags" class="grid"></div>
+</section>
+
+<section id="shoes">
+  <div class="section-title"><h2>Shoes</h2><p>Step out in style.</p></div>
+  <div id="shoes-grid" class="grid"></div>
+</section>
+
+<section class="about">
+  <div class="section-title"><h2>About Better Fluid</h2></div>
+  <p>Better Fluid is a fashion collection focused on stylish bags and shoes. Replace this text with your real business story, delivery information and social media details.</p>
+</section>
+</main>
+
+<footer>© <span id="year"></span> Better Fluid. All rights reserved.</footer>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeCart()">
+ <div class="drawer">
+  <button class="close" onclick="closeCart()">×</button>
+  <h2>Your Cart</h2>
+  <div id="cart"></div>
+  <div class="total"><span>Total</span><span id="total">₦0</span></div>
+  <h2>Checkout</h2>
+  <div class="notice">
+    <b>Bank Transfer</b><br>
+    Bank: YOUR BANK NAME<br>
+    Account Name: BETTER FLUID<br>
+    Account Number: YOUR ACCOUNT NUMBER<br><br>
+    Please transfer the exact total, then submit your order below. Replace these details before publishing.
+  </div>
+  <div class="form">
+    <input id="name" placeholder="Full name" required>
+    <input id="phone" placeholder="Phone / WhatsApp number" required>
+    <textarea id="address" placeholder="Delivery address" required></textarea>
+    <button class="btn order" onclick="submitOrder()">Submit Order</button>
+  </div>
+  <p id="status" style="color:#d4af37;font-size:13px"></p>
+ </div>
+</div>
+
+<script>
+const products=[
+ {id:1,name:"Classic Gold Bag",price:25000,type:"Bags",icon:"👜"},
+ {id:2,name:"Everyday Tote",price:30000,type:"Bags",icon:"👜"},
+ {id:3,name:"Mini Shoulder Bag",price:22000,type:"Bags",icon:"👜"},
+ {id:4,name:"Signature Handbag",price:45000,type:"Bags",icon:"👜"},
+ {id:5,name:"Classic Sneakers",price:35000,type:"Shoes",icon:"👟"},
+ {id:6,name:"Luxury Slides",price:18000,type:"Shoes",icon:"🥿"},
+ {id:7,name:"Street Trainers",price:40000,type:"Shoes",icon:"👟"},
+ {id:8,name:"Elegant Heels",price:38000,type:"Shoes",icon:"👠"}
+];
+let cart=JSON.parse(localStorage.getItem("betterFluidCart")||"[]");
+const naira=n=>new Intl.NumberFormat("en-NG",{style:"currency",currency:"NGN",maximumFractionDigits:0}).format(n);
+
+function productCard(p){return `<div class="card"><div class="pic">${p.icon}</div><div class="card-body"><div class="tag">${p.type}</div><h3>${p.name}</h3><div class="price">${naira(p.price)}</div><button onclick="add(${p.id})">Add to Cart</button></div></div>`}
+function render(){document.getElementById("bags").innerHTML=products.filter(p=>p.type==="Bags").map(productCard).join("");document.getElementById("shoes-grid").innerHTML=products.filter(p=>p.type==="Shoes").map(productCard).join("");renderCart()}
+function add(id){let x=cart.find(i=>i.id===id);x?x.qty++:cart.push({id,qty:1});save();openCart()}
+function change(id,d){let x=cart.find(i=>i.id===id);if(!x)return;x.qty+=d;if(x.qty<1)cart=cart.filter(i=>i.id!==id);save()}
+function save(){localStorage.setItem("betterFluidCart",JSON.stringify(cart));renderCart()}
+function renderCart(){let box=document.getElementById("cart");let count=cart.reduce((s,i)=>s+i.qty,0);document.getElementById("count").textContent=count;if(!cart.length){box.innerHTML='<div class="empty">Your cart is empty.</div>';document.getElementById("total").textContent=naira(0);return}let total=0;box.innerHTML=cart.map(i=>{let p=products.find(x=>x.id===i.id),sub=p.price*i.qty;total+=sub;return `<div class="cart-item"><div><b>${p.name}</b><br><small>${naira(p.price)} × ${i.qty}</small></div><div class="qty"><button onclick="change(${p.id},-1)">−</button> ${i.qty} <button onclick="change(${p.id},1)">+</button></div></div>`}).join("");document.getElementById("total").textContent=naira(total)}
+function openCart(){document.getElementById("overlay").classList.add("show");renderCart()}
+function closeCart(){document.getElementById("overlay").classList.remove("show")}
+function submitOrder(){
+ if(!cart.length){alert("Your cart is empty.");return}
+ let name=document.getElementById("name").value.trim(),phone=document.getElementById("phone").value.trim(),address=document.getElementById("address").value.trim();
+ if(!name||!phone||!address){alert("Please complete your name, phone number and delivery address.");return}
+ let lines=cart.map(i=>{let p=products.find(x=>x.id===i.id);return `${p.name} x${i.qty} = ${naira(p.price*i.qty)}`}).join("\n");
+ let total=cart.reduce((s,i)=>s+products.find(p=>p.id===i.id).price*i.qty,0);
+ let message=`BETTER FLUID ORDER\n\nCustomer: ${name}\nPhone: ${phone}\nAddress: ${address}\n\n${lines}\n\nTOTAL: ${naira(total)}\n\nPayment: Bank transfer`;
+ // Replace 2348000000000 with your real WhatsApp business number.
+ let whatsapp="2348000000000";
+ document.getElementById("status").textContent="Opening WhatsApp to submit your order…";
+ window.open("https://wa.me/"+whatsapp+"?text="+encodeURIComponent(message),"_blank");
+}
+document.getElementById("year").textContent=new Date().getFullYear();render();
+</script>
+</body>
+</html>
